@@ -1,18 +1,30 @@
-name: Docker Image CI
+name: Flask Docker
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
-
-  build:
-
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: docker build -t flask-docker-app .
+
+      - name: Run Docker container in background
+        run: |
+          docker run -d -p 5001:5001 --name flask_test flask-docker-app
+          sleep 5
+
+      - name: Test the running app
+        run: |
+          curl http://localhost:5001 | grep "Hola desde Flask"
