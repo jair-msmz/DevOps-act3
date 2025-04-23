@@ -1,6 +1,6 @@
 services:
   web:
-    platform: linux/arm64/v8
+    platform: linux/amd64
     build: ./app
     ports:
     - "5001:5001"
