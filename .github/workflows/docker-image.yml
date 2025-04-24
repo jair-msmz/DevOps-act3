@@ -59,19 +59,22 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${IP_ADDRESS} '
+            sudo apt update
+            sudo apt install -y python3 python3-pip python3-venv git
 
-              # Now we have got the access of EC2 and we will start the deploy .
-              cd /home/ubuntu
-              rm -rf DevOps-act3
-              git clone https://github.com/jair-msmz/DevOps-act3.git &&
-              cd DevOps-act3
-              git checkout main &&
-              git pull origin main &&
-              python3 -m venv venv
-              source venv/bin/activate
-              pip install -r app/requirements.txt
-              flask run --host=0.0.0.0 --port=5001 &
-              '
+            cd /home/ubuntu
+            rm -rf DevOps-act3
+            git clone https://github.com/jair-msmz/DevOps-act3.git
+            cd DevOps-act3
+
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install --upgrade pip
+            pip install -r app/requirements.txt
+
+            fuser -k 5001/tcp || true  # mata cualquier proceso anterior en el puerto 5001
+            nohup flask run --host=0.0.0.0 --port=5001 &
+          '
 
       - name: Trigger Render Deploy
         run: |
