@@ -42,3 +42,9 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: jairmsmz/flask-devops-app:latest
+
+      - name: Trigger Render Deploy
+        run: |
+          curl -X POST https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }} \
+          -H 'Authorization: Bearer ${{ secrets.RENDER_API_KEY }}' \
+          -H 'Accept: application/json'
