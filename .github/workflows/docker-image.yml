@@ -75,7 +75,7 @@ jobs:
             export FLASK_APP=app/app.py
 
             fuser -k 5001/tcp || true
-            nohup flask run --host=0.0.0.0 --port=5001 > flask.log 2>&1 &
+            nohup flask run --host=0.0.0.0 --port=5001 &
           EOF
 
       - name: Trigger Render Deploy
