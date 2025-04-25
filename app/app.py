@@ -8,8 +8,8 @@ def home():
     
     return """
             Holaaaaaa
-            Testeando la actividad 3
-            (si se ve esto, significa que funcionó el push)
+            \nTesteando la actividad 3
+            \n(si se ve esto, significa que funcionó el push)
             """
 
 if __name__=="__main__":
